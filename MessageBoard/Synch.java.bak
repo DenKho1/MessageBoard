@@ -1,0 +1,47 @@
+import java.net.*;
+import java.io.*;
+
+public class Main {
+  public static void main(String[] args) throws Exception {
+    Users u=new Users();
+    try{
+     
+      int counter=0;
+      System.out.println("Server Started ....");
+      for(int i=0;i<=4;i++){
+        counter++;
+         //server accept the client connection request
+        System.out.println(" >> " + "Client No:" + counter + " started!");
+        ServerClientThread sct = new ServerClientThread(counter,u); //send  the request to a separate thread
+        sct.start();
+        sct.join();
+      }
+
+      u.getUsersForm();
+    }catch(Exception e){
+      System.out.println(e);
+    }
+  }
+}
+
+
+
+
+class ServerClientThread extends Thread {
+  int clientNo;
+  int squre;
+  Users user;
+  
+  ServerClientThread(int counter, Users u){
+   
+    clientNo=counter;
+    user=u;
+  }
+  
+  public void run(){
+    user.addUser("Mina"+clientNo);
+    user.getUsersForm();
+    user.removeUser("Mina3");
+}
+  
+}

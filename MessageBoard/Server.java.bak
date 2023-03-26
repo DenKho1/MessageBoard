@@ -1,0 +1,78 @@
+import java.net.*;
+import java.io.*;
+
+public class Server {
+
+    public void start(int port){
+        try{
+		Users u=new Users();
+        ServerSocket server = new ServerSocket(port);
+		System.out.println("waiting to receive message");
+		
+		while(true)
+		{
+			Socket client=server.accept();
+			scThread tserver=new scThread(client,u);
+			tserver.start();
+			tserver.join();
+		}
+		
+        }
+         catch(Exception e)
+        {
+                System.out.println("Something went wrtong with the Server 1");
+        }
+
+    }
+
+   
+    public static void main(String[] args) {
+        Server server=new Server();
+        server.start(8008);
+    }
+}
+
+class scThread extends Thread{
+	Socket client;
+	Users user;
+	PrintWriter out;
+	BufferedReader in;
+	scThread(Socket c,Users u)
+	{
+		client=c;
+		user=u;
+	}
+	
+	public void run()
+	{
+		Boolean online=true;
+		  try{
+			while(online)
+			{
+				out = new PrintWriter(client.getOutputStream(), true);
+				in = new BufferedReader(new InputStreamReader(client.getInputStream()));
+				String msg = in.readLine();
+				String trans=getCommand(msg);
+				
+				if(trans.equals("register")
+				{
+					if(user.get)
+				}
+				
+			}
+           
+        }
+         catch(IOException e)
+        {
+                System.out.println("Something went wrtong with the Server 1");
+        }
+			
+	}
+	
+	public String getCommand(String message)//for server to translate command 
+  {
+    return message.split("\"")[3];
+  }
+	
+	
+}
